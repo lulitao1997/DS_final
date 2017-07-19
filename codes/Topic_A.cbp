@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Topic_A"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Topic_B">
+				<Option output="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 Topic_B"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Topic_B/fast">
+				<Option output="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 Topic_B/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Topic_A">
+				<Option output="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 Topic_A"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Topic_A/fast">
+				<Option output="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 Topic_A/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/lulitao/文档/Data\ Structure\ Homework/Final\ Project/Topic_A/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_A.cpp">
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/Topic_B.cpp">
+			<Option target="Topic_B"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/all.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/block.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/graph.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/order.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/point.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/read.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/restaurant.h">
+			<Option target="Topic_B"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/road.h">
+			<Option target="Topic_B"/>
+			<Option target="Topic_A"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/wread.h">
+			<Option target="Topic_B"/>
+		</Unit>
+		<Unit filename="/home/lulitao/文档/Data Structure Homework/Final Project/Topic_A/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

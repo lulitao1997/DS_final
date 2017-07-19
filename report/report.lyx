@@ -1,0 +1,1021 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass ctex-article
+\begin_preamble
+% 如果没有这一句命令，XeTeX会出错，原因参见
+% http://bbs.ctex.org/viewthread.php?tid=60547
+\DeclareRobustCommand\nobreakspace{\leavevmode\nobreak\ }
+\end_preamble
+\options UTF8
+\use_default_options true
+\maintain_unincluded_children false
+\language chinese-simplified
+\language_package none
+\inputencoding utf8-plain
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format pdf4
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3.18cm
+\topmargin 2.54cm
+\rightmargin 3.18cm
+\bottommargin 2.54cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\listings_params "language={C++},basicstyle={\linespread{1} \ttfamily },frame=single,keywordstyle={\bfseries},tabsize=4,breaklines={true}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+基于时空数据分析的决策支持 实验报告
+\end_layout
+
+\begin_layout Author
+卢力韬 15307130084@fudan.edu.cn
+\end_layout
+
+\begin_layout Section
+环境
+\end_layout
+
+\begin_layout Standard
+Ubuntu 16.04.1 + Clion 
+\end_layout
+
+\begin_layout Standard
+编译命令： 
+\end_layout
+
+\begin_layout Standard
+g++ -std=c++11 Topic_A.cpp -o Topic_A -O2
+\end_layout
+
+\begin_layout Standard
+g++ -std=c++11 Topic_B.cpp -o Topic_B -O2
+\end_layout
+
+\begin_layout Standard
+(g++ 5.4.0)
+\end_layout
+
+\begin_layout Section
+数据结构与算法
+\end_layout
+
+\begin_layout Subsection
+出租车基础分析
+\end_layout
+
+\begin_layout Standard
+本部分要求通过出租车的轨迹计算出每个司机每天的收入，以及司机收入在时间上的分布情况。但是读入文件是一件十分麻烦的事情，为了方便我们之后的程序，在这里可以先定义一
+个类CSVrow，并重载它的读入函数。
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class CSVrow : public vector<string> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    friend istream &operator>>(istream &str, CSVrow &data);
+\end_layout
+
+\begin_layout Plain Layout
+
+private:
+\end_layout
+
+\begin_layout Plain Layout
+
+    void get_row(istream &src) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        string buf, ele;
+\end_layout
+
+\begin_layout Plain Layout
+
+        getline(src, buf);
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (!buf.empty()) buf.pop_back();
+\end_layout
+
+\begin_layout Plain Layout
+
+        stringstream s_in(buf);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        while (getline(s_in, ele, ','))
+\end_layout
+
+\begin_layout Plain Layout
+
+            push_back(ele);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+istream &operator>>(istream& str, CSVrow &data) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    data.clear();
+\end_layout
+
+\begin_layout Plain Layout
+
+    data.get_row(str);
+\end_layout
+
+\begin_layout Plain Layout
+
+    return str;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+这样只用简单的一句
+\family typewriter
+fin >> r
+\family default
+; 就可以读入一整行的内容了，十分方便。
+\end_layout
+
+\begin_layout Standard
+读入了数据之后，我们可以开始计算。但是经过实验发现轨迹数据有十分多的错误。比如：在零点时到底是否为空车；空车与非空车状态会无意义的切换导致可能将距离很小的也当成
+订单计入司机收入；还有轨迹产生漂移，导致瞬时速度极大。这些在计算收入的时候都需要考虑。我在计算的时候，根据轨迹文件的注释一栏，Takein，Takeout来查看
+是否为空车。默认零点开始为空车。并且把距离大于0.01km的订单计入司机收入。
+\end_layout
+
+\begin_layout Subsection
+消极策略
+\end_layout
+
+\begin_layout Standard
+本部分要求模拟司机接单过程，如果3km内有订单，则以最高速驶向次订单，并载客。载客完毕之后一直在原地等待，直到3km内又出现订单为止。
+\end_layout
+
+\begin_layout Standard
+实现本部分，我们要先读入路网。
+\end_layout
+
+\begin_layout Standard
+这里，我做了一个优化，在建图的时候，对于一条路中间度数为二的点，我们可以不加到图里。而只将每条路的头与尾当成这个图的节点。这样可以大大减少图中点的数量（减少80
+%）。
+\end_layout
+
+\begin_layout Standard
+要模拟这部分，我们要实现：
+\end_layout
+
+\begin_layout Enumerate
+算出一个点在路网上的投影
+\end_layout
+
+\begin_layout Enumerate
+查询任意一个点3km内是否有订单
+\end_layout
+
+\begin_layout Enumerate
+算出路网上任意两点的最短路
+\end_layout
+
+\begin_layout Enumerate
+查询3km内路网距离最近的点
+\end_layout
+
+\begin_layout Subsubsection
+算出一个点在路网上的投影
+\end_layout
+
+\begin_layout Standard
+我们用插入分点的方法来计算投影。即对于一条路，如果它两个相邻的轨迹点的距离大于50米，那么我们就在这两个点中间插入若干个点，使得相邻两个点的距离都小于50m。这
+样，我们查询任意一个点在路网上的投影，就相当于查询路网上所有点与我们插入的分点中距离查询点最近的是什么。
+\end_layout
+
+\begin_layout Standard
+可以知道，这样得到的最近点距离真实的投影误差不会超过50m。考虑到路网输入的经纬度座标也仅仅只有6位有效数字，这样的误差是可以接受的。
+\end_layout
+
+\begin_layout Standard
+接下来我们用网格索引来实现，查询最近点的功能。网格索引，即
+\family typewriter
+vector<Point> blk[XNUM][YNUM];
+\end_layout
+
+\begin_layout Standard
+对于每个点，我们可以通过
+\family typewriter
+int ix = (p.longitude - min_x) / intv_x, iy = (p.latitude - min_y) / intv_y;
+\family default
+来知道它是属于
+\begin_inset Formula $(ix,iy)$
+\end_inset
+
+这个网格的。每次插入或删除一个点，只需要在它对应的那个网格里面进行操作即可。
+\end_layout
+
+\begin_layout Standard
+在网格索引中寻找最近点：我们只用暴力的看
+\begin_inset Formula $(ix,iy)$
+\end_inset
+
+这个网格与其周围的8个网格内的所有点，找出距离最小的即可。将网格的长、宽调至一个适宜的值之后，经过实验，每次查询最近点只需要调用30~80次dist（计算两点距
+离）函数。这样的复杂度是可以接受的。考虑到常数问题，这甚至比K-d tree更优。
+\end_layout
+
+\begin_layout Subsubsection
+查询任意一个点3km内是否有订单
+\end_layout
+
+\begin_layout Standard
+同样的用网格索引的方法。
+\end_layout
+
+\begin_layout Standard
+维护一个网格索引，内含当前时间之前的所有订单。注意，请与上一节中的网格索引做区分，它们含的点是不同的。而且因为这个网格索引内的点比较稀疏，经过实验，我们的网格长
+宽均为前者的15倍较好。
+\end_layout
+
+\begin_layout Standard
+查询3km内点的方法和前面也类似。我们看查询点3km内覆盖到了哪些网格， 暴力的看这些网格内部的点哪些是3km内的。
+\end_layout
+
+\begin_layout Subsubsection
+算出路网上任意两点的最短路
+\end_layout
+
+\begin_layout Standard
+这里用了A*算法。与Dijkstra算法不同，A*算法在令元素入有限队列的时候用的是启发函数，这样在真实最短路上的点很有可能先入队。用时比Dijkstra更短一
+些。经过测试，A*与Dijkstra的对比如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+邯郸-张江
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+邯郸-人民广场
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+二附中-人民广场
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+张江-长泰
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1987
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1083
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4217
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+63
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+26671
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7594
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+18706
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+693
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A*与Dijkstra入队的节点数对比
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+可以看到，A*在长、短距离的求解上都比Dijkstra算法要优。
+\end_layout
+
+\begin_layout Subsubsection
+查询3km内路网距离最近的点
+\end_layout
+
+\begin_layout Standard
+本来我们获得了3km内所有的点之后，就可以用上一节的A*算法求出所有点的路网距离，取最小就可。但是实践中发现有时3km内点会多达几千个。于是考虑在3km内点多余
+500个时候，直接用Dijkstra算法一次性求出所有点的路网距离，而不是用A*一个个的求。应用这个优化之后，程序用时有9.7%的提升。
+\end_layout
+
+\begin_layout Subsection
+积极策略
+\end_layout
+
+\begin_layout Standard
+本部分与消极策略仅仅不同与：当没有订单时，司机以10km/h低速漫游，直到遇到订单为止。
+\end_layout
+
+\begin_layout Standard
+我们需要一个新的操作：随机漫游。
+\end_layout
+
+\begin_layout Standard
+为此实现了一个函数：
+\family typewriter
+queue<Point> gen_random_path(Point &p)
+\family default
+.返回一个随机的轨迹。具体为随机走10条近期没走过的路。将路上的所有点都加入轨迹中，并返回之。
+\end_layout
+
+\begin_layout Standard
+此外，这部分还有一个优化：在随机漫游时，我们需要不停地查看3km内是否有订单。我们知道，这次查询的点与上次查询的点相距很近（因为都在低速随机漫游的轨迹上）。这样
+3km内的大多数点都是不变的，我们可以只看有变化的新覆盖到的网格，与新没覆盖到网格的变化。（如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:网格索引查询3km内的优化"
+
+\end_inset
+
+）
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename pasted1.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+网格索引查询3km内的优化，圆心代表3km的范围；红色为改变的网格
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:网格索引查询3km内的优化"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+TopicA的补充说明
+\end_layout
+
+\begin_layout Standard
+在计算消极策略与积极策略时，我发现消极策略与积极策略的结果并无大不同。这是因为生成订单过多，根本不会出现3km内没有订单的情况，司机没有间隔的不停接单。为了模拟
+更有意义，将订单随机减少了20倍，并且加了一个限制：如果订单等待超过15分钟，乘客会自动取消订单。这样两种策略就有显著差别了。
+\end_layout
+
+\begin_layout Subsection
+POI推荐
+\end_layout
+
+\begin_layout Standard
+这部分可以通过前面司机的路径数据来推测餐馆的热门程度。定义餐馆的积分函数
+\begin_inset Formula $score$
+\end_inset
+
+，每个下车点对
+\begin_inset Formula $score$
+\end_inset
+
+的贡献为一个分段函数
+\begin_inset Formula $f(dis)$
+\end_inset
+
+ (
+\begin_inset Formula $dis$
+\end_inset
+
+为下车点与餐馆的路网距离) 
+\begin_inset Formula 
+\[
+f(dis)=\begin{cases}
+10 & dis<10m\\
+7 & dis\in(0,1,1]km\\
+6 & dis\in(1,2]km\\
+3 & dis\in(2,3]km
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+每次查询某个点附近的餐馆，先用网格索引查询3km的餐馆，再根据
+\begin_inset Formula $score\times k$
+\end_inset
+
+排序，其中
+\begin_inset Formula $k$
+\end_inset
+
+是一个随路网距离增大而减小的系数。
+\end_layout
+
+\begin_layout Standard
+此外，实验发现，推荐出来的餐馆有时会有聚团现象。为此，加了一个判断：如果前10个推荐的最大距离小于1km，则再推荐5个远离前十个的餐馆。
+\end_layout
+
+\begin_layout Section
+实验结论
+\end_layout
+
+\begin_layout Subsection
+基础分析
+\end_layout
+
+\begin_layout Standard
+司机一天收入的分布情况如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:司机一天收入分布"
+
+\end_inset
+
+所示，司机每日平均收入为671.67元，考虑到司机还有租金等成本，这个收入还是合理的。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/dir_distro.eps
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+司机一天收入分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:司机一天收入分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+分时段的分布如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:司机收入分时段分布"
+
+\end_inset
+
+所示
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/time_distro.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+司机收入分时段分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:司机收入分时段分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+可以看到，在午夜3~6点出现了一个收入的低谷，这也与我们的日常生活经验相符。
+\end_layout
+
+\begin_layout Subsection
+消极策略
+\end_layout
+
+\begin_layout Standard
+消极策略司机24小时平均收入为1221元。司机的收入分布如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:消极策略下司机收入分布"
+
+\end_inset
+
+所示。可以看到，大部分司机集中在2200~2700这个区段。但也有一部分司机收入小于500。这可能是因为消极策略下收入与起始点有很大关系。如果起始点处于偏远的位
+置，司机就要在原地等待很久。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/neg_d.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+消极策略下司机收入分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:消极策略下司机收入分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+各个时间段所有司机总收入如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:所有司机总收入时间分布"
+
+\end_inset
+
+所示。可以看到，临近午夜时，司机的总收入有大幅下降。这是订单在午夜变得更少，原地等待更难接到单之故。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/neg_t.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+消极策略下所有司机总收入时间分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:所有司机总收入时间分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+积极策略
+\end_layout
+
+\begin_layout Standard
+积极策略所有司机24小时平均收入1437元。司机的收入分布如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:积极策略下司机收入分布"
+
+\end_inset
+
+所示。可以看到，比起消极策略，低收入的司机变少了很多。可见低速巡游确实可提升收入。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/pos_d.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+积极策略下司机收入分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:积极策略下司机收入分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+各个时间段所有司机总收入如图
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:积极策略下所有司机总收入时间分布"
+
+\end_inset
+
+所示。可以看到，积极策略下，收入沿时间分布反倒变得十分不均匀，大多数收入都集中在早晚高峰时。可能纯随机的策略在订单较多时能帮助司机接到更多订单，但是在订单较少时
+反而让司机更难接到订单了。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/lulitao/文档/Data Structure Homework/Final Project/graphs/pos_t.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+积极策略下所有司机总收入时间分布
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:积极策略下所有司机总收入时间分布"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+POI推荐
+\end_layout
+
+\begin_layout Standard
+请运行demo
+\end_layout
+
+\begin_layout Section
+总结
+\end_layout
+
+\begin_layout Standard
+本次PJ让我初试了一个小型项目的编写，不同于以往都是单文件的程序。事实上我有大量的时间都用在把一坨坨代码分开( ´_っ`)。
+\end_layout
+
+\begin_layout Standard
+这个PJ还有几个可以优化的地方：A*算法有时候会不稳定，极少数情况会话费反常多的时间。也许可以根据地图的性质来将A*分成多段求解，还有基础分析与消极策略读入都是
+一个瓶颈，可以考虑用fastIO。
+\end_layout
+
+\begin_layout Standard
+还有一个比较神奇的是 -Os 与不加优化，程序的速度可以相差10倍。
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,17 @@
+# Shanghai Taxi Trajectories Analyses
+
+## Overview
+This project analyses real data of Shanghai taxi’s trajectories, and simulates several strategies drivers may use. Also, we provide POI recommendation by analyzing trajectories data.
+
+## Contents
+`codes` folder contains all sources code files (including source code of Topic A and B).
+Please refer to `demo_input` folder before running Topic B.
+
+`final_output` folder contains all pre-processed data and scripts.
+
+`graph` folder contains all images used in the report.
+
+For more information, please see `report` folder.
+
+## Build
+Please build this project by CMake.
